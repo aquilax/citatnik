@@ -24,13 +24,6 @@ indexes:
 # Used once in query history.
 - kind: Quote
   properties:
-  - name: date
-    direction: desc
-  - name: visible
-
-# Used once in query history.
-- kind: Quote
-  properties:
   - name: visible
   - name: date
 
