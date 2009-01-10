@@ -21,7 +21,7 @@ indexes:
   - name: date
     direction: desc
 
-# Used once in query history.
+# Unused in query history -- copied from input.
 - kind: Quote
   properties:
   - name: visible
