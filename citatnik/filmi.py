@@ -1,11 +1,10 @@
 import cgi
-import os
-
 from google.appengine.api import users
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
+from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
+from google.appengine.ext.webapp.util import run_wsgi_app
+import os
 
 class Movie(db.Model):
 	title = db.StringProperty()
@@ -23,17 +22,33 @@ class Quote(db.Model):
 	date = db.DateTimeProperty(auto_now_add=True)
 
 class MainPage(webapp.RequestHandler):
+  """Main page"""
   def get(self):
-    quotes = db.GqlQuery("SELECT * FROM Quote ORDER BY date DESC")
+    """Main page dafault action"""
+    quotes = db.GqlQuery("SELECT * FROM Quote WHERE visible = True ORDER BY date DESC")
+    if users.get_current_user():
+      url = users.create_logout_url(self.request.uri)
+      url_linktext = 'Изход'
+    else:
+      url = users.create_login_url(self.request.uri)
+      url_linktext = 'Вход'
+
+    admin = False
+    if users.is_current_user_admin():
+      admin = True
+
     template_values = {
-			'quotes': quotes
+      'quotes': quotes,
+      'url': url,
+      'url_linktext': url_linktext,
+      'admin': admin
       }
     path = os.path.join(os.path.dirname(__file__), 'index.html')
     self.response.out.write(template.render(path, template_values))
 
 class AddQuote(webapp.RequestHandler):
   def get(self):
-		movies = db.GqlQuery("SELECT * FROM Movie ORDER BY title")
+		movies = db.GqlQuery("SELECT * FROM Movie WHERE visible = True ORDER BY title")
 		template_values = {
 			'movies': movies
 		}
@@ -41,22 +56,90 @@ class AddQuote(webapp.RequestHandler):
 		self.response.out.write(template.render(path, template_values))
 
   def post(self):
-		if len(self.request.get('movie')) = 0:
-			movie = Movie()
+    if (len(self.request.get('movie')) != 0):
+      movie = Movie()
+      movie.title = self.request.get('movie')
+      movie.put()
+    else:
+      movie = db.get(self.request.get('mid'))
     quote = Quote()
     if users.get_current_user():
       quote.user = users.get_current_user()
-    quote.movie = self.request.get('movie')
+    quote.movie = movie
     quote.quote = self.request.get('quote')
     quote.rating = 0
     quote.visible = False
     quote.put()
     self.redirect('/')
-   
+
+class Admin(webapp.RequestHandler):
+  def get(self):
+    if users.is_current_user_admin():
+      quotes = db.GqlQuery("SELECT * FROM Quote WHERE visible = False ORDER BY date DESC")
+      if users.get_current_user():
+        url = users.create_logout_url(self.request.uri)
+        url_linktext = 'Изход'
+      else:
+        url = users.create_login_url(self.request.uri)
+        url_linktext = 'Вход'
+
+      admin = False
+      if users.is_current_user_admin():
+        admin = True
+
+      template_values = {
+        'quotes': quotes,
+        'url': url,
+        'url_linktext': url_linktext,
+        'admin': admin
+        }
+      path = os.path.join(os.path.dirname(__file__), 'admin.html')
+      self.response.out.write(template.render(path, template_values))
+    else:
+      self.redirect('/')
+
+class Moderate(webapp.RequestHandler):
+  def get(self):
+    if not users.is_current_user_admin():
+      self.redirect('/')
+    qid = self.request.get('qid')
+    movies = db.GqlQuery("SELECT * FROM Movie ORDER BY title")
+    quote = db.get(qid)
+    template_values = {
+      'movies': movies,
+      'quote': quote,
+      'qid': qid
+    }
+    path = os.path.join(os.path.dirname(__file__), 'moderate.html')
+    self.response.out.write(template.render(path, template_values))
+
+  def post(self):
+    if not users.is_current_user_admin():
+      self.redirect('/')
+    mid = self.request.get('mid')
+    if (mid == 0):
+      movie = Movie()
+      movie.title = self.request.get('movie')
+      movie.visible = True
+      movie.put()
+    else:
+      movie = db.get(self.request.get('mid'))
+      movie.visible = True
+      movie.put()
+    quote = db.get(self.request.get('qid'));
+    quote.movie = movie
+    quote.quote = self.request.get('quote')
+    quote.rating = 0
+    quote.visible = True
+    quote.put()
+    self.redirect('/admin')
+
 application = webapp.WSGIApplication(
-                                     [('/', MainPage),
-                                     ('/add', AddQuote)], 
-                                     debug=True)
+  [('/', MainPage),
+  ('/add', AddQuote),
+  ('/admin', Admin),
+  ('/moderate', Moderate)],
+  debug=True)
 
 def main():
   run_wsgi_app(application)

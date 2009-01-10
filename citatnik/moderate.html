@@ -2,7 +2,8 @@
 
 {% block content %}
       <div id="form">
-        <form action="/add" method="post">
+        <form action="/moderate" method="post">
+          <input type="hidden" name="qid" value="{{qid}}"/>
           <h2>Име на филм:</h2>
           <select name="mid">
             <option value="0">Нов</option>
@@ -10,9 +11,9 @@
             <option value="{{movie.key}}">{{ movie.title|escape }}</option>
           {% endfor %}
           </select>
-          <div><input name="movie" type="text" value=""/></div>
+          <div><input name="movie" type="text" value="{{quote.movie.title|escape}}"/></div>
           <h2>Цитат:</h2>
-          <div><textarea name="quote" rows="6" cols="60"></textarea></div>
+          <div><textarea name="quote" rows="6" cols="60">{{quote.quote|escape}}</textarea></div>
           <input type="submit" value="Запази"/>
         </form>
       </div>

@@ -2,7 +2,7 @@
 
 {% block content %}
           {% for quote in quotes %}
-            <div><h3><a href="/movie/{{ quote.movie.key }}">{{ quote.movie.title|escape }}</a></h3></div>
+            <div><h3><a href="/moderate?qid={{ quote.key }}">{{ quote.movie.title|escape }}</a></h3></div>
             <blockquote>{{ quote.quote|escape|linebreaks }}</blockquote>
             <em>Добавен на: {{ quote.date|date:"d/m/Y H:i"|lower }}</em>
           {% endfor %}
