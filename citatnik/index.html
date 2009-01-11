@@ -8,6 +8,7 @@
             <br />
           {% endfor %}
           {% if paged %}
+            <div class="pager">
             {% if has_prev %}
               <a href="?page={{ prev }}">&laquo;</a>
             {% endif %}
@@ -15,5 +16,6 @@
             {% if has_next %}
               <a href="?page={{ page }}">&raquo;</a>
             {% endif %}
+            </div>
           {% endif%}
 {% endblock %}
