@@ -4,17 +4,20 @@
       <div id="form">
         <form action="/moderate" method="post">
           <input type="hidden" name="qid" value="{{qid}}"/>
-          <h2>Име на филм:</h2>
+          <label>Изберете филм:<br />
           <select name="mid">
             <option value="0">Нов</option>
           {% for movie in movies %}
             <option value="{{movie.key}}">{{ movie.title|escape }}</option>
           {% endfor %}
           </select>
-          <div><input name="movie" type="text" value="{{quote.movie.title|escape}}"/></div>
-          <h2>Цитат:</h2>
-          <div><textarea name="quote" rows="6" cols="60">{{quote.quote|escape}}</textarea></div>
-          <input type="submit" value="Запази"/>
+          </label><br />
+          <label>или добавете нов:<br />
+          <input name="movie" type="text" value="{{quote.movie.title|escape}}"/>
+          </label><br />
+          <label>Цитат:
+          <textarea name="quote">{{quote.quote|escape}}</textarea></label><br />
+          <button type="submit">Запазване</button>
         </form>
       </div>
 {% endblock %}
