@@ -16,7 +16,7 @@ indexes:
   - name: visible
   - name: date
 
-# Used once in query history.
+# Used 22 times in query history.
 - kind: Movie
   properties:
   - name: visible
@@ -28,7 +28,7 @@ indexes:
   - name: date
     direction: desc
 
-# Used 9 times in query history.
+# Used 41 times in query history.
 - kind: Quote
   properties:
   - name: visible

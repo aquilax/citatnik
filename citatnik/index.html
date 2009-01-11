@@ -7,4 +7,13 @@
             <em>Добавен на: {{ quote.date|date:"d/m/Y H:i"|lower }}</em>
             <br />
           {% endfor %}
+          {% if paged %}
+            {% if has_prev %}
+              <a href="?page={{ prev }}">&laquo;</a>
+            {% endif %}
+            {{ page }}
+            {% if has_next %}
+              <a href="?page={{ page }}">&raquo;</a>
+            {% endif %}
+          {% endif%}
 {% endblock %}

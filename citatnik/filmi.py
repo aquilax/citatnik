@@ -5,6 +5,7 @@ from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
+from django.core.paginator import ObjectPaginator, InvalidPage
 import os
 
 class Movie(db.Model):
@@ -26,7 +27,25 @@ class MainPage(webapp.RequestHandler):
   """Main page"""
   def get(self):
     """Main page dafault action"""
-    quotes = db.GqlQuery("SELECT * FROM Quote WHERE visible = True ORDER BY date DESC")
+    #quotes = db.GqlQuery("SELECT * FROM Quote WHERE visible = True ORDER BY date DESC")
+    quotes = db.Query(Quote)
+    quotes.filter('visible = ', True)
+    quotes.order('-date')
+    paginator = ObjectPaginator(quotes, 10)
+
+    if (self.request.get('page')):
+      try:
+        page = int(self.request.get('page'))
+      except:
+        page = 0
+    else:
+      page = 0
+    
+    if (paginator.pages < page):
+      page = 0
+
+    items = paginator.get_page(page)
+
     if users.get_current_user():
       url = users.create_logout_url(self.request.uri)
       url_linktext = 'Изход'
@@ -39,10 +58,15 @@ class MainPage(webapp.RequestHandler):
       admin = True
 
     template_values = {
-      'quotes': quotes,
+      'quotes': items,
       'url': url,
       'url_linktext': url_linktext,
-      'admin': admin
+      'admin': admin,
+      'paged': True,
+      'has_next': paginator.has_next_page(page),
+      'has_prev': paginator.has_previous_page(page),
+      'page': int(page)+1,
+      'prev': int(page)-1
       }
     path = os.path.join(os.path.dirname(__file__), 'index.html')
     self.response.out.write(template.render(path, template_values))
