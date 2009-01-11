@@ -73,6 +73,32 @@ class AddQuote(webapp.RequestHandler):
     quote.put()
     self.redirect('/')
 
+class MoviePage(webapp.RequestHandler):
+  def get(self):
+    mid = self.request.get('mid')
+    movie = db.get(mid)
+    quotes = db.Query(Quote)
+    quotes.filter('movie =', movie);
+    if users.get_current_user():
+      url = users.create_logout_url(self.request.uri)
+      url_linktext = 'Изход'
+    else:
+      url = users.create_login_url(self.request.uri)
+      url_linktext = 'Вход'
+    admin = False
+    if users.is_current_user_admin():
+      admin = True
+
+    template_values = {
+      'quotes': quotes,
+      'movie': movie,
+      'url': url,
+      'url_linktext': url_linktext,
+      'admin': admin
+      }
+    path = os.path.join(os.path.dirname(__file__), 'index.html')
+    self.response.out.write(template.render(path, template_values))
+
 class Admin(webapp.RequestHandler):
   def get(self):
     if users.is_current_user_admin():
@@ -139,7 +165,9 @@ application = webapp.WSGIApplication(
   [('/', MainPage),
   ('/add', AddQuote),
   ('/admin', Admin),
-  ('/moderate', Moderate)],
+  ('/moderate', Moderate),
+  ('/movie', MoviePage),
+  ],
   debug=True)
 
 def main():
