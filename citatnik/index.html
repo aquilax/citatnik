@@ -2,8 +2,9 @@
 
 {% block content %}
           {% for quote in quotes %}
-            <div><h3><a href="/movie?mid={{ quote.movie.key }}">{{ quote.movie.title|escape }}</a></h3></div>
+            <div><h3><a href="/movie?mid={{ quote.movie.key }}">{{ quote.movie.title|escape }}</a>{% if quote.movie.year %} ({{quote.movie.year|escape}}){% endif %}</h3></div>
             <blockquote>{{ quote.quote|escape|linebreaks }}</blockquote>
             <em>Добавен на: {{ quote.date|date:"d/m/Y H:i"|lower }}</em>
+            <br />
           {% endfor %}
 {% endblock %}
