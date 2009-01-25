@@ -151,6 +151,9 @@ h3 a,.pager a {
 color:#000;
 text-decoration:none;
 }
+.pager{
+  margin: 2em 0;
+}
 
 h3 a:hover,#addd a:hover {
 text-decoration:underline;

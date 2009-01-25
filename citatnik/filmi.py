@@ -103,6 +103,7 @@ class MoviePage(webapp.RequestHandler):
     movie = db.get(mid)
     quotes = db.Query(Quote)
     quotes.filter('movie =', movie);
+    quotes.filter('visible = ', True)
     if users.get_current_user():
       url = users.create_logout_url(self.request.uri)
       url_linktext = 'Изход'
