@@ -1,6 +1,14 @@
 {% extends "template.html" %}
-
 {% block content %}
+          {% if first %}
+            <h2>Филми:</h2>
+            <div id="mlist">
+            {% for movie in movies %}
+              <a href="/movie?mid={{ movie.key }}">{{ movie.title|escape }}{% if movie.year %} ({{movie.year|escape}}){% endif %}</a><br />
+            {% endfor %}
+            </div>
+          {% endif %}
+          <h2>Последни цитати:</h2>
           {% for quote in quotes %}
             <div><h3><a href="/movie?mid={{ quote.movie.key }}">{{ quote.movie.title|escape }}</a>{% if quote.movie.year %} ({{quote.movie.year|escape}}){% endif %}</h3></div>
             <blockquote>{{ quote.quote|escape|linebreaks }}</blockquote>

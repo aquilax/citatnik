@@ -31,6 +31,9 @@ class MainPage(webapp.RequestHandler):
     quotes = db.Query(Quote)
     quotes.filter('visible = ', True)
     quotes.order('-date')
+    movies = db.Query(Movie)
+    movies.order('year')
+
     paginator = ObjectPaginator(quotes, 10)
 
     if (self.request.get('page')):
@@ -59,6 +62,7 @@ class MainPage(webapp.RequestHandler):
 
     template_values = {
       'quotes': items,
+      'movies': movies,
       'url': url,
       'url_linktext': url_linktext,
       'admin': admin,
@@ -66,7 +70,8 @@ class MainPage(webapp.RequestHandler):
       'has_next': paginator.has_next_page(page),
       'has_prev': paginator.has_previous_page(page),
       'page': int(page)+1,
-      'prev': int(page)-1
+      'prev': int(page)-1,
+      'first': (page == 0)
       }
     path = os.path.join(os.path.dirname(__file__), 'index.html')
     self.response.out.write(template.render(path, template_values))
