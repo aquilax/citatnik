@@ -9,19 +9,19 @@ from django.core.paginator import ObjectPaginator, InvalidPage
 import os
 
 class Movie(db.Model):
-	title = db.StringProperty()
-	year = db.StringProperty()
-	description = db.StringProperty(multiline=True)
-	imdb = db.StringProperty()
-	visible = db.BooleanProperty(default=False)
+  title = db.StringProperty()
+  year = db.StringProperty()
+  description = db.StringProperty(multiline=True)
+  imdb = db.StringProperty()
+  visible = db.BooleanProperty(default=False)
 
 class Quote(db.Model):
-	movie = db.ReferenceProperty(Movie)
-	quote = db.StringProperty(multiline=True)
-	author = db.UserProperty()
-	rating = db.RatingProperty(default=0)
-	visible = db.BooleanProperty(default=False)
-	date = db.DateTimeProperty(auto_now_add=True)
+  movie = db.ReferenceProperty(Movie)
+  quote = db.StringProperty(multiline=True)
+  author = db.UserProperty()
+  rating = db.RatingProperty(default=0)
+  visible = db.BooleanProperty(default=False)
+  date = db.DateTimeProperty(auto_now_add=True)
 
 class MainPage(webapp.RequestHandler):
   """Main page"""
@@ -78,12 +78,12 @@ class MainPage(webapp.RequestHandler):
 
 class AddQuote(webapp.RequestHandler):
   def get(self):
-		movies = db.GqlQuery("SELECT * FROM Movie WHERE visible = True ORDER BY title")
-		template_values = {
-			'movies': movies
-		}
-		path = os.path.join(os.path.dirname(__file__), 'add.html')
-		self.response.out.write(template.render(path, template_values))
+    movies = db.GqlQuery("SELECT * FROM Movie WHERE visible = True ORDER BY title")
+    template_values = {
+      'movies': movies
+    }
+    path = os.path.join(os.path.dirname(__file__), 'add.html')
+    self.response.out.write(template.render(path, template_values))
 
   def post(self):
     if (len(self.request.get('movie')) != 0):
