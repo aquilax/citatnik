@@ -10,25 +10,16 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-# Unused in query history -- copied from input.
 - kind: Movie
   properties:
   - name: visible
   - name: date
 
-# Used once in query history.
 - kind: Movie
   properties:
   - name: visible
   - name: title
 
-# Unused in query history -- copied from input.
-- kind: Quote
-  properties:
-  - name: date
-    direction: desc
-
-# Used 19 times in query history.
 - kind: Quote
   properties:
   - name: visible

@@ -44,7 +44,7 @@ font-family:'Courier New', 'Courier New', Courier, monospace;
 }
 
 #container {
-width:680px;
+max-width:680px;
 margin:0 auto;
 }
 
@@ -69,16 +69,19 @@ font-size:1.2em;
 #logo {
 text-align:center;
 margin:1em 0 5em;
+margin:1em 0 8vw;
 }
 
 h1 {
 font-size:8.6em;
+font-size:13vw;
 text-transform:uppercase;
-font-weight:700%;
+font-weight:700;
 }
 
 #logo p {
 font-size:2.2em;
+font-size:3.4vw;
 color:#888A85;
 margin:-1.3em 0 0 130px;
 }
@@ -111,20 +114,8 @@ float:right;
 font-size:.8em;
 }
 
-#sidebar {
-margin-top:1em;
-float:right;
-width:160px;
-}
-
 #words {
-float:left;
-width:480px;
-}
-
-#ads {
-width:120px;
-margin:0 auto;
+  padding: 1em;
 }
 
 input {

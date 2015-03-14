@@ -1,7 +1,8 @@
-application: citatnik
-version: 2
-runtime: python
+application: citatnik-hrd
+version: 3
+runtime: python27
 api_version: 1
+threadsafe: true
 
 handlers:
 - url: /css
@@ -16,4 +17,4 @@ handlers:
   upload: robots.txt
 
 - url: /.*
-  script: filmi.py
+  script: filmi.application
