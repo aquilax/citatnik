@@ -69,19 +69,16 @@ font-size:1.2em;
 #logo {
 text-align:center;
 margin:1em 0 5em;
-margin:1em 0 8vw;
 }
 
 h1 {
 font-size:8.6em;
-font-size:13vw;
 text-transform:uppercase;
 font-weight:700;
 }
 
 #logo p {
 font-size:2.2em;
-font-size:3.4vw;
 color:#888A85;
 margin:-1.3em 0 0 130px;
 }
