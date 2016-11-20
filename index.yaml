@@ -20,6 +20,11 @@ indexes:
   - name: visible
   - name: title
 
+- kind: Movie
+  properties:
+  - name: visible
+  - name: year
+
 - kind: Quote
   properties:
   - name: visible

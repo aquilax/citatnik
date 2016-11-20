@@ -1,0 +1,20 @@
+{% extends "template.html" %}
+{% block content %}
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <!-- citatnik2 -->
+  <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5312778245695320"
+     data-ad-slot="9338024706"
+     data-ad-format="auto"></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  <h2>Цитати от "{{movie.title|escape}}"</h2>
+  {% for quote in quotes %}
+    <blockquote>{{ quote.quote|escape|linebreaks }}</blockquote>
+    <em>Добавен на: {{ quote.date|date:"d/m/Y H:i"|lower }}</em>
+    <br />
+  {% endfor %}
+{% endblock %}
+{% block title %}Цитати от български филми: {{movie.title|escape}}{% endblock %}

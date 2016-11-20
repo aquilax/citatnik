@@ -31,7 +31,7 @@ class MainPage(webapp.RequestHandler):
     quotes.order('-date')
     movies = db.Query(Movie)
     movies.order('year')
-
+    movies.filter('visible = ', True)
     items = quotes.fetch(20)
 
     if users.get_current_user():
@@ -106,7 +106,7 @@ class MoviePage(webapp.RequestHandler):
       'url_linktext': url_linktext,
       'admin': admin
       }
-    path = os.path.join(os.path.dirname(__file__), 'index.html')
+    path = os.path.join(os.path.dirname(__file__), 'movie.html')
     self.response.out.write(template.render(path, template_values))
 
 class Admin(webapp.RequestHandler):
